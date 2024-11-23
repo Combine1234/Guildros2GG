@@ -1,0 +1,133 @@
+#### setup for terminal before using the ros2 command ####
+source /opt/ros/humble/setup.bash
+or
+source install/setup.bash
+
+#### run rviz ####
+- ros2 run rviz2 rviz2
+
+#### Create Workspace ####
+	- mkdir -p ~/{name}/src
+	- cd ~/{name}/
+	- colcon build
+
+ #### make a topic and sub and make it run on ros2 ####
+ 
+- source /opt/ros/humble/setup.bash
+- mkdir -p ~/ros2_ws/src
+- cd ~/ros2_ws/
+- colcon build
+- source install/setup.bash
+- cd ~/ros2_ws/src
+- ros2 pkg create --build-type ament_python my_ros2_package
+
+
+#### make run the model to show ####
+
+Ok when u already make the chassis/urdf file already u must run the launch file like rsp.launch.py by ros 
+but u have to rebuild the file  use
+	- source /opt/ros/humble/setup.bash
+	- source install/setup.bash
+	- colcon build --symlink-install
+	- ros2 launch <pkg_name> rsp.launch.py
+	
+	
+#### object and vribl in urdf ####
+
+if boject is box 
+    <link name="_">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <box size="0 0 0"/>
+            </geometry>
+            <material name="white"/> #for color
+        </visual>
+    </link>
+    
+if boject is cylinder
+
+   <link name="_">
+        <visual>
+            <geometry>
+                <cylinder radius="0" length="0"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link>
+
+
+#### launch the simulation in gazebo ####
+	- source install/setup.bash
+	- ros2 launch <pkg_name> rsp.launch.py use_sim_time:=true
+	
+	another terminal
+	- source /opt/ros/humble/setup.bash
+	- ros2 launch gazebo_ros gazebo.launch.py
+	
+	another terminal [for spawn the robot]
+	- source /opt/ros/humble/setup.bash
+	- ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity bot_name
+
+	or u can use
+	- source /opt/ros/humble/setup.bash
+	- ros2 launch <pkg_name> launch_sim.launch.py
+
+
+
+
+
+#### Edit and make model for simulation ####
+	use must in the urdf folder path like
+	   - cd ~/{name}/src/{pkg_name}/urdf
+	- gedit model.urdf
+	
+	u can see pic on your phone
+	
+	when u edit model.urdf already next
+	back to pkg path
+	- cd ~/{name}/src/{pkg_name}/
+	- gedit package.xml
+	
+	then add between test_depend and export
+	
+		<exec_depend>joint_state_publisher</exec_depend>
+  		<exec_depend>joint_state_publisher_gui</exec_depend>
+  		<exec_depend>robot_state_publisher_gui</exec_depend>
+  		<exec_depend>rviz</exec_depend>
+  		
+  		
+
+
+
+
+#### Create pkg in Workspace #####
+	- ros2 pkg create --build-type ament_cmake {pkg_name}
+	
+	#### pkg would in the ~/{name}/src/{pkg_name} ####
+	
+	##### if we need to make the 3D simulation we would make this folder name like
+	      1. launch
+	      2. urdf
+	      3. config	[used for store the RVIz configuration file]
+	      on the command we use like
+	      		- mkdir launch urdf config
+	      		#### explane like mkdir[is create folder] {folder_name}
+	      then back to source folder workspace and redo " colcon build " 
+	      when do it already back to urdf folder that u made
+	      ^
+	      |
+	      on top of this operation is for make 3D simuration RVIz urdf
+	      and next topic is for make the 3D Sim RVIz
+	      
+	      
+[INFO] [1731993074.186082242] [minimal_subscriber]: I heard: "leftForward"
+[INFO] [1731993074.547904624] [minimal_subscriber]: I heard: "stop"
+[INFO] [1731993074.715492779] [minimal_subscriber]: I heard: "rightForward"
+[INFO] [1731993075.079646214] [minimal_subscriber]: I heard: "stop"
+[INFO] [1731993075.605848252] [minimal_subscriber]: I heard: "rightBackward"
+[INFO] [1731993075.886809514] [minimal_subscriber]: I heard: "stop"
+[INFO] [1731993076.688701895] [minimal_subscriber]: I heard: "leftBackward"
+[INFO] [1731993077.065401371] [minimal_subscriber]: I heard: "stop"
+
+
